@@ -31,4 +31,7 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .run(function ($window, $rootScope) {
+    $rootScope.appVersion = $window.APP_VERSION;
   });

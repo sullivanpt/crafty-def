@@ -164,7 +164,10 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath:  /\.\.\//,
+        exclude: [
+          '/crafty/' // bower.json is broken
+        ]
       }
     },
 
@@ -303,6 +306,7 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
+            'version.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -351,9 +355,25 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    // Capture the git commit for reporting
+    'git-describe': {
+      options: {
+        failOnError: false
+      },
+      me: {}
     }
   });
 
+  grunt.registerTask('version', 'Tag the current build revision', function () {
+    grunt.event.once('git-describe', function (rev) {
+      grunt.file.write(grunt.config('yeoman.app') + '/version.js',
+        'APP_VERSION={revision:"' + rev.object + (rev.dirty || '') + '",date:"' + grunt.template.today('isoDateTime') + '"};'
+      );
+    });
+    grunt.task.run('git-describe');
+  });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -362,6 +382,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'version',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -377,6 +398,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'version',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -385,6 +407,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'version',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',

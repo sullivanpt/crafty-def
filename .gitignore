@@ -1,9 +1,15 @@
+# app specific
+app/version.js
+
 # generator-angular
 node_modules
 dist
 .tmp
 .sass-cache
 bower_components
+
+# files to try and prevent committing
+npm-debug.log
 
 # IntellijIdea
 *.iml
