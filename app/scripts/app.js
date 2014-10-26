@@ -12,7 +12,8 @@ angular
   .module('craftyDefApp', [
     'ngAnimate',
     'ngRoute',
-    'ngTouch'
+    'ngTouch',
+    'ui.route'
   ])
   .config(function ($routeProvider) {
     $routeProvider
