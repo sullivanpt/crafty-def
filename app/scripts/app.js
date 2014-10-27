@@ -36,3 +36,9 @@ angular
   .run(function ($window, $rootScope) {
     $rootScope.appVersion = $window.APP_VERSION;
   });
+
+// stubs these namespace so we can use DI for mocking
+angular.module('craftyDefApp')
+  .factory('$crafty', function ($window) {
+    return $window.Crafty;
+  });

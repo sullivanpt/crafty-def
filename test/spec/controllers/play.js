@@ -3,7 +3,11 @@
 describe('Controller: PlayCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('craftyDefApp'));
+  beforeEach(module('craftyDefApp', function($provide) {
+    $provide.decorator('$crafty',  function ($craftyMock) {
+      return $craftyMock;
+    });
+  }));
 
   var PlayCtrl,
     scope;
@@ -16,7 +20,7 @@ describe('Controller: PlayCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  it('should attach a dummy to the scope', function () {
+    expect(scope.dummy).toBeTruthy();
   });
 });
