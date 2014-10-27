@@ -415,7 +415,7 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'cdnify',
+    // 'cdnify', -- stupid for a mobbile app
     'cssmin',
     'uglify',
     'filerev',
