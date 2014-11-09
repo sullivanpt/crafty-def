@@ -10,6 +10,8 @@ angular.module('craftyDefApp')
     this.math = {
       randomInt: noop
     };
+    this.startup = noop;
+    this.shutdown = noop;
     this.init = noop;
     this.stop = noop;
     this.background = noop;

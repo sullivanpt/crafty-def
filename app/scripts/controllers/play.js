@@ -11,9 +11,10 @@ angular.module('craftyDefApp')
   .controller('PlayCtrl', function ($scope, $crafty) {
     $scope.dummy = true; // TODO: what goes here?
 
-    $crafty.init(600,300);
+    $crafty.startup(600,300);
+
     $scope.$on('$destroy', function() {
-      $crafty.stop(/*true*/);
+      $crafty.shutdown(); // stop crafty on controller exit
     });
 
     $crafty.background('rgb(127,127,127)');

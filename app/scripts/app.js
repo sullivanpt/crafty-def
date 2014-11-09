@@ -40,5 +40,31 @@ angular
 // stubs these namespace so we can use DI for mocking
 angular.module('craftyDefApp')
   .factory('$crafty', function ($window) {
-    return $window.Crafty;
+    var crafty = $window.Crafty || {};
+
+    // patch broken Crafty.stop(true)
+    crafty.shutdown = function () {
+      crafty.stop();
+
+      // manual stop(true);
+      crafty.audio.remove();
+
+      // Throw out any old objects
+      crafty.viewport.reset();
+      crafty('2D').each(function () {
+        if (!this.has('Persist')) {
+          this.destroy();
+        }
+      });
+
+      angular.element(crafty.stage.elem).addClass('hide');
+    };
+
+    // patch reasonable initialization function
+    crafty.startup = function (w,h) {
+      crafty.init(w,h);
+      angular.element(crafty.stage.elem).removeClass('hide');
+    };
+
+    return crafty;
   });
